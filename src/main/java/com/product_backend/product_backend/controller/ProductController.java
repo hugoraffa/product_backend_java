@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,7 @@ public class ProductController {
 
     // Create a new product
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Map<String, Object>> createProduct(@Valid @RequestBody Product product) {
 
         if (product.hasId() && productRepository.findById(product.getId()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

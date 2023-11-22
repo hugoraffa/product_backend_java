@@ -6,6 +6,7 @@ import java.util.Random;
 import javax.validation.constraints.NotNull;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,15 +34,18 @@ public class Product {
     }
 
     @Column(name = "code")
+    @NotBlank
     @NotNull
     private String code;
 
     @Column(name = "name")
+    @NotBlank
     @NotNull
     private String name;
 
-    @NotNull
     @Column(name = "description")
+    @NotBlank
+    @NotNull
     private String description;
 
     @Column(name = "price")
@@ -53,10 +57,12 @@ public class Product {
     private Integer quantity;
 
     @Column(name = "inventoryStatus")
+    @NotBlank
     @NotNull
     private String inventoryStatus;
 
     @Column(name = "category")
+    @NotBlank
     @NotNull
     private String category;
 
