@@ -1,6 +1,7 @@
 package com.product_backend.product_backend.controller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,30 @@ public class ProductController {
     // all products methods
     //////////////////////////////////////////
 
-    // Create a new product
+    // Retrieve all products
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getAllProducts() {
+
+        Map<String, Object> retObj = new HashMap<>();
+        retObj.put("products", productRepository.findAll());
+
+        return new ResponseEntity<>(retObj, HttpStatus.OK);
     }
 
-    // Retrieve all products
+    // Create a new product
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Map<String, Object>> createProduct(@RequestBody Product product) {
+
+        if (product.hasId() && productRepository.findById(product.getId()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
         Product savedProduct = productRepository.save(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+
+        Map<String, Object> retObj = new HashMap<>();
+        retObj.put("id", savedProduct.getId());
+
+        return new ResponseEntity<>(retObj, HttpStatus.CREATED);
     }
 
     ///////////////////////////////////////////
